@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+artifacts/checkpoints/*/
+artifacts/deploy/*
+!artifacts/checkpoints/.gitkeep
+!artifacts/deploy/.gitkeep
+data/raw/corpus.jsonl
+data/clean/corpus.jsonl
+data/labeled/sft.jsonl

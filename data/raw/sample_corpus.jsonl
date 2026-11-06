@@ -1,0 +1,8 @@
+{"id":"doc-001","text":"  ACME Billing: Invoices are generated on the 1st of each month and are due NET 15.  ","source":"sample_docs","topic":"billing"}
+{"id":"doc-002","text":"SHORT","source":"sample_docs","topic":"noise"}
+{"id":"doc-003","text":"ACME Billing: invoices are generated on the 1st of each month and are due NET 15.","source":"sample_docs","topic":"billing"}
+{"id":"doc-004","text":"Reset your password from the security settings page. After requesting a reset, check your email within ten minutes; the link expires after one hour for safety.","source":"sample_docs","topic":"auth"}
+{"id":"doc-005","text":"Developers can request higher API rate limits by opening a support ticket with your use case, expected traffic, and the endpoint you will call.","source":"sample_docs","topic":"api"}
+{"id":"doc-006","text":"Shipping estimates include business days only. Orders placed after 2pm local warehouse time may roll to the next business day.","source":"sample_docs","topic":"shipping"}
+{"id":"doc-007","text":"If a charge looks unfamiliar, compare the merchant descriptor on your statement with recent subscriptions shown in your account billing history.","source":"sample_docs","topic":"billing"}
+{"id":"doc-008","text":"For enterprise accounts, SAML SSO can be configured under Admin → Security → Identity Provider. Test the connection before enforcing SSO org-wide.","source":"sample_docs","topic":"auth"}

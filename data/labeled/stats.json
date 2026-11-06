@@ -1,0 +1,6 @@
+{
+  "stage": "labeler",
+  "created_at": "2026-11-06T18:26:49.800719+00:00",
+  "labeled_rows": 6,
+  "sft_path": "data/labeled/sft.jsonl"
+}

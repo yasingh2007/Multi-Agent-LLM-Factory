@@ -1,0 +1,8 @@
+# Core pipeline (always)
+pyyaml>=6.0
+
+# Optional: real fine-tuning (install when training.dry_run is false)
+# torch>=2.0.0
+# transformers>=4.36.0
+# datasets>=2.14.0
+# accelerate>=0.25.0

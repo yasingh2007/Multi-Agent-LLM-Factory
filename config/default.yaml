@@ -1,0 +1,41 @@
+paths:
+  raw_dir: data/raw
+  clean_dir: data/clean
+  labeled_dir: data/labeled
+  artifacts_dir: artifacts
+
+collector:
+  # If set, copy/sync this file into raw_dir as corpus.jsonl; otherwise use existing raw corpus.
+  seed_file: data/raw/sample_corpus.jsonl
+  manifest_extra:
+    project: small-llm-training-factory-demo
+    license_hint: "synthetic_sample_only"
+
+cleaner:
+  min_chars: 20
+  max_chars: 2000
+  lowercase: true
+  strip_extra_whitespace: true
+  dedupe: true
+
+labeling:
+  # Instruction templates applied per row (field "text" from clean corpus)
+  instruction: "Summarize the following text in one sentence."
+  output_key: "response"
+  input_key: "instruction"
+
+training:
+  dry_run: true
+  # Used when dry_run is false
+  base_model: "sshleifer/tiny-gpt2"
+  output_dir: artifacts/checkpoints
+  num_train_epochs: 1
+  per_device_train_batch_size: 2
+  learning_rate: 5.0e-5
+  max_length: 128
+
+evaluation:
+  min_train_samples: 3
+
+deployment:
+  package_dir: artifacts/deploy
