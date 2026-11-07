@@ -1,0 +1,57 @@
+# Example: run labeling through an OpenAI-compatible API (OpenAI, Groq, Together, Ollama gateway, etc.)
+#   set OPENAI_API_KEY=...
+#   set OPENAI_BASE_URL=https://api.groq.com/openai/v1   # optional override
+#   python scripts/run_pipeline.py --config config/llm.yaml
+
+paths:
+  raw_dir: data/raw
+  clean_dir: data/clean
+  labeled_dir: data/labeled
+  artifacts_dir: artifacts
+
+collector:
+  seed_file: data/raw/sample_corpus.jsonl
+  manifest_extra:
+    project: small-llm-training-factory-demo
+    license_hint: "synthetic_sample_only"
+
+cleaner:
+  min_chars: 20
+  max_chars: 2000
+  lowercase: true
+  strip_extra_whitespace: true
+  dedupe: true
+
+labeling:
+  instruction: "Summarize the following text in one sentence."
+  output_key: "response"
+  input_key: "instruction"
+  mode: llm
+  llm:
+    api_key_env: OPENAI_API_KEY
+    base_url_env: OPENAI_BASE_URL
+    base_url: https://api.openai.com/v1
+    model: gpt-4o-mini
+    temperature: 0.2
+    max_tokens: 128
+    timeout_sec: 60
+  dpo:
+    enabled: true
+    rejected_strategy: weak
+
+training:
+  dry_run: true
+  output_dir: artifacts/checkpoints
+
+evaluation:
+  min_train_samples: 3
+  gates:
+    min_nonempty_rate: 1.0
+    min_compression_ratio: 0.02
+    max_compression_ratio: 0.95
+    min_token_recall: 0.12
+    max_token_f1: 0.88
+    max_row_fail_fraction: 0.25
+
+deployment:
+  package_dir: artifacts/deploy

@@ -36,6 +36,8 @@ def main() -> None:
     print(f"  Raw:    {config['paths']['raw_dir']}/corpus.jsonl")
     print(f"  Clean:  {config['paths']['clean_dir']}/corpus.jsonl")
     print(f"  Labeled: {config['paths']['labeled_dir']}/sft.jsonl")
+    if config.get("labeling", {}).get("dpo", {}).get("enabled", False):
+        print(f"  DPO:     {config['paths']['labeled_dir']}/dpo.jsonl")
     print(f"  Artifacts: {config['paths']['artifacts_dir']}/")
 
 

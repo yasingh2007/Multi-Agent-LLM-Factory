@@ -5,7 +5,6 @@ paths:
   artifacts_dir: artifacts
 
 collector:
-  # If set, copy/sync this file into raw_dir as corpus.jsonl; otherwise use existing raw corpus.
   seed_file: data/raw/sample_corpus.jsonl
   manifest_extra:
     project: small-llm-training-factory-demo
@@ -19,14 +18,29 @@ cleaner:
   dedupe: true
 
 labeling:
-  # Instruction templates applied per row (field "text" from clean corpus)
   instruction: "Summarize the following text in one sentence."
   output_key: "response"
   input_key: "instruction"
+  # heuristic | llm  (llm uses OpenAI-compatible Chat Completions)
+  mode: heuristic
+  llm:
+    api_key_env: OPENAI_API_KEY
+    base_url_env: OPENAI_BASE_URL
+    base_url: https://api.openai.com/v1
+    model: gpt-4o-mini
+    temperature: 0.2
+    max_tokens: 128
+    timeout_sec: 60
+    system_prompt: >
+      You label training data for a small language model.
+      Return only the one-sentence summary—no markdown or preamble.
+  dpo:
+    enabled: true
+    # weak = first few words; tail = legacy tail-only summary (good rejected example)
+    rejected_strategy: weak
 
 training:
   dry_run: true
-  # Used when dry_run is false
   base_model: "sshleifer/tiny-gpt2"
   output_dir: artifacts/checkpoints
   num_train_epochs: 1
@@ -36,6 +50,13 @@ training:
 
 evaluation:
   min_train_samples: 3
+  gates:
+    min_nonempty_rate: 1.0
+    min_compression_ratio: 0.02
+    max_compression_ratio: 0.95
+    min_token_recall: 0.08
+    max_token_f1: 0.92
+    max_row_fail_fraction: 0.34
 
 deployment:
   package_dir: artifacts/deploy

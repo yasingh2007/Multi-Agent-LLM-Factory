@@ -1,16 +1,110 @@
 {
   "stage": "evaluation_agent",
-  "created_at": "2026-11-06T18:26:49.813359+00:00",
+  "created_at": "2026-11-07T16:39:01.615003+00:00",
   "passed": true,
   "sample_count": 6,
   "issues": [],
+  "aggregate_metrics": {
+    "compression_ratio": {
+      "mean": 0.4374,
+      "median": 0.4459,
+      "min": 0.3333,
+      "max": 0.5309
+    },
+    "token_recall": {
+      "mean": 0.4169,
+      "median": 0.4105,
+      "min": 0.3333,
+      "max": 0.5333
+    },
+    "token_f1": {
+      "mean": 0.5491,
+      "median": 0.5517,
+      "min": 0.4706,
+      "max": 0.64
+    },
+    "rouge_l_f1": {
+      "mean": 0.5237,
+      "median": 0.5247,
+      "min": 0.4444,
+      "max": 0.6154
+    }
+  },
+  "row_failures": 0,
+  "row_fail_fraction": 0.0,
+  "per_row": [
+    {
+      "id": "doc-001",
+      "metrics": {
+        "compression_ratio": 0.5309,
+        "token_recall": 0.5333,
+        "token_f1": 0.64,
+        "rouge_l_f1": 0.6154
+      },
+      "issues": []
+    },
+    {
+      "id": "doc-004",
+      "metrics": {
+        "compression_ratio": 0.3333,
+        "token_recall": 0.3636,
+        "token_f1": 0.5,
+        "rouge_l_f1": 0.4444
+      },
+      "issues": []
+    },
+    {
+      "id": "doc-005",
+      "metrics": {
+        "compression_ratio": 0.4126,
+        "token_recall": 0.3333,
+        "token_f1": 0.4706,
+        "rouge_l_f1": 0.4706
+      },
+      "issues": []
+    },
+    {
+      "id": "doc-006",
+      "metrics": {
+        "compression_ratio": 0.3889,
+        "token_recall": 0.4211,
+        "token_f1": 0.5517,
+        "rouge_l_f1": 0.5333
+      },
+      "issues": []
+    },
+    {
+      "id": "doc-007",
+      "metrics": {
+        "compression_ratio": 0.4792,
+        "token_recall": 0.4,
+        "token_f1": 0.5517,
+        "rouge_l_f1": 0.5161
+      },
+      "issues": []
+    },
+    {
+      "id": "doc-008",
+      "metrics": {
+        "compression_ratio": 0.4795,
+        "token_recall": 0.45,
+        "token_f1": 0.5806,
+        "rouge_l_f1": 0.5625
+      },
+      "issues": []
+    }
+  ],
+  "dpo": {
+    "pairs": 6,
+    "invalid_pairs": 0,
+    "identical_chosen_rejected": 0
+  },
   "training": {
     "stage": "training_agent",
     "mode": "dry_run",
-    "created_at": "2026-11-06T18:26:49.809135+00:00",
+    "created_at": "2026-11-07T16:39:01.606586+00:00",
     "sample_count": 6,
     "message": "Dry run: install torch+transformers and set training.dry_run false for real fine-tuning.",
     "checkpoint_dir": "artifacts/checkpoints"
-  },
-  "notes": "Replace with task metrics, perplexity, or LLM-as-judge as you scale."
+  }
 }

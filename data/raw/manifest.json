@@ -1,6 +1,6 @@
 {
   "stage": "collector",
-  "created_at": "2026-11-06T18:26:49.794036+00:00",
+  "created_at": "2026-11-07T16:39:01.595428+00:00",
   "row_count": 8,
   "corpus_path": "data/raw/corpus.jsonl",
   "content_sha256": "f01ed016fa02b36b3398d38fb3ae556aa07a8446dea1afe48c659006f3499fb5",

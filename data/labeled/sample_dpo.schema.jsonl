@@ -1,0 +1,1 @@
+{"id":"example-1","prompt":"### Instruction:\nSummarize the following text in one sentence.\n\n### Input:\nReset your password from the security settings page.\n\n### Response:\n","chosen":"Use the security settings page to reset your password and check email for the one-hour reset link.","rejected":"reset your password...","meta":{"task":"summarization"}}

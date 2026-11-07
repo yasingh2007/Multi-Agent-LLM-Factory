@@ -1,7 +1,7 @@
 {
   "stage": "training_agent",
   "mode": "dry_run",
-  "created_at": "2026-11-06T18:26:49.809135+00:00",
+  "created_at": "2026-11-07T16:39:01.606586+00:00",
   "sample_count": 6,
   "message": "Dry run: install torch+transformers and set training.dry_run false for real fine-tuning.",
   "checkpoint_dir": "artifacts/checkpoints"

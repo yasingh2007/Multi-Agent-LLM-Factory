@@ -8,9 +8,9 @@ A **multi-agent pipeline** for collecting data, cleaning it, labeling, training 
 |-------|------|-------|--------|
 | **Dataset Collector** | Ingests raw sources into a versioned corpus + manifest | Config, optional URL list / files | `data/raw/corpus.jsonl`, `data/raw/manifest.json` |
 | **Dataset Cleaner** | Normalize, dedupe, filter | Raw corpus + manifest | `data/clean/corpus.jsonl`, `data/clean/stats.json` |
-| **Labeling Agent** | Build SFT (and optional preference) examples | Clean corpus | `data/labeled/sft.jsonl`, `data/labeled/stats.json` |
+| **Labeling Agent** | SFT via **heuristic** or **OpenAI-compatible LLM**; writes **DPO** pairs | Clean corpus | `data/labeled/sft.jsonl`, `data/labeled/dpo.jsonl`, `stats.json` |
 | **Training Agent** | Fine-tune (or stub dry-run) | Labeled JSONL, config | `artifacts/checkpoints/`, `artifacts/training_log.json` |
-| **Evaluation Agent** | Simple overlap / length checks + optional metrics | Labeled file, checkpoint dir | `artifacts/eval_report.json` |
+| **Evaluation Agent** | Compression, token recall, ROUGE-L, quality gates | SFT (+ DPO sanity) | `artifacts/eval_report.json` |
 | **Deployment Agent** | Package model card + file list for release | Checkpoint + eval report | `artifacts/deploy/` |
 
 ## Quick start
@@ -33,6 +33,38 @@ Stages run in order. Training defaults to **`dry_run: true`** (no GPU, writes a 
 ## Configuration
 
 Edit **`config/default.yaml`**: paths, cleaner rules, labeling templates, training knobs.
+
+### LLM labeling (OpenAI-compatible)
+
+1. Copy **`.env.example`** → set `OPENAI_API_KEY` (and optionally `OPENAI_BASE_URL` for Groq, Together, Ollama, etc.).
+2. Set `labeling.mode: llm` or run **`config/llm.yaml`**:
+
+```bash
+$env:OPENAI_API_KEY="sk-..."
+python scripts/run_pipeline.py --config config/llm.yaml
+```
+
+If the key is missing, the labeler **falls back to heuristic** and records errors in `data/labeled/stats.json`.
+
+### DPO / preference JSONL
+
+With `labeling.dpo.enabled: true`, each row gets:
+
+- **`prompt`**: instruction + input (chat template friendly)
+- **`chosen`**: preferred summary (LLM or heuristic)
+- **`rejected`**: weak summary (`rejected_strategy: weak` | `tail`)
+
+See **`data/labeled/sample_dpo.schema.jsonl`** for one-line schema reference. Feed `dpo.jsonl` into TRL `DPOTrainer` or your preference optimizer.
+
+### Evaluation metrics
+
+`artifacts/eval_report.json` includes per-row and aggregate:
+
+- **compression_ratio** — response length / input length  
+- **token_recall** — input tokens present in the summary  
+- **token_f1** / **rouge_l_f1** — overlap without extra dependencies  
+
+Tune thresholds under **`evaluation.gates`**; the run **fails** (`passed: false`) when gates are breached.
 
 ## Extending
 

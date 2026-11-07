@@ -9,3 +9,5 @@ artifacts/deploy/*
 data/raw/corpus.jsonl
 data/clean/corpus.jsonl
 data/labeled/sft.jsonl
+data/labeled/dpo.jsonl
+.env
