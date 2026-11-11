@@ -37,6 +37,12 @@ labeling:
     system_prompt: >
       You label training data for a small language model.
       Return only the one-sentence summary—no markdown or preamble.
+    # Throttle API usage (mode: llm). Set requests_per_minute: 0 to disable.
+    rate_limit:
+      requests_per_minute: 30
+      min_interval_sec: 0
+      batch_size: 0
+      batch_sleep_sec: 0
   dpo:
     enabled: true
     # weak = first few words; tail = legacy tail-only summary (good rejected example)

@@ -35,6 +35,10 @@ labeling:
     temperature: 0.2
     max_tokens: 128
     timeout_sec: 60
+    rate_limit:
+      requests_per_minute: 30
+      batch_size: 20
+      batch_sleep_sec: 1.5
   dpo:
     enabled: true
     rejected_strategy: weak

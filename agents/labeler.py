@@ -5,7 +5,13 @@ from pathlib import Path
 from typing import Any
 
 from ._io import read_jsonl, with_run_id, write_json, write_jsonl
-from .llm_client import LLMError, chat_completion, resolve_llm_settings
+from .llm_client import (
+    LLMError,
+    RateLimiter,
+    build_rate_limiter,
+    chat_completion,
+    resolve_llm_settings,
+)
 
 
 def _dummy_summary(text: str) -> str:
@@ -41,6 +47,7 @@ def _label_with_llm(
     instruction: str,
     text: str,
     llm_cfg: dict[str, Any],
+    rate_limiter: RateLimiter | None = None,
 ) -> tuple[str, dict[str, Any]]:
     settings = resolve_llm_settings(llm_cfg)
     system = str(
@@ -56,7 +63,12 @@ def _label_with_llm(
         )
     )
     user = user_template.format(instruction=instruction, input=text)
-    content = chat_completion(settings=settings, system=system, user=user)
+    content = chat_completion(
+        settings=settings,
+        system=system,
+        user=user,
+        rate_limiter=rate_limiter,
+    )
     meta = {"provider": "llm", "model": settings["model"]}
     return content, meta
 
@@ -95,13 +107,20 @@ def run(config: dict[str, Any]) -> None:
         use_llm = False
         heuristic_fallback = len(rows)
 
+    rate_limiter = build_rate_limiter(llm_cfg) if use_llm else None
+
     for row in rows:
         text = str(row.get("text", ""))
         label_meta: dict[str, Any] = {"source_row": row}
 
         if use_llm:
             try:
-                response, provider_meta = _label_with_llm(instruction, text, llm_cfg)
+                response, provider_meta = _label_with_llm(
+                    instruction,
+                    text,
+                    llm_cfg,
+                    rate_limiter=rate_limiter,
+                )
                 label_meta["labeler"] = provider_meta
                 llm_ok += 1
             except LLMError as e:
@@ -155,6 +174,10 @@ def run(config: dict[str, Any]) -> None:
         "llm_error_count": len(llm_errors),
         "heuristic_fallback": heuristic_fallback,
         "llm_errors_sample": llm_errors[:5],
+        "rate_limit": {
+            "enabled": rate_limiter.enabled if rate_limiter else False,
+            "total_wait_sec": round(rate_limiter.total_wait_sec, 3) if rate_limiter else 0.0,
+        },
         "sft_path": str(sft_path.as_posix()),
         "dpo_path": str(dpo_path.as_posix()) if dpo_enabled else None,
     }

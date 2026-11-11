@@ -57,6 +57,8 @@ python scripts/run_pipeline.py --config config/llm.yaml
 
 If the key is missing, the labeler **falls back to heuristic** and records errors in `data/labeled/stats.json`.
 
+**Rate limits** (`labeling.llm.rate_limit`): `requests_per_minute` spaces calls evenly; optional `batch_size` + `batch_sleep_sec` pause after every N requests. Total throttle time is recorded in `data/labeled/stats.json` → `rate_limit.total_wait_sec`.
+
 ### DPO / preference JSONL
 
 With `labeling.dpo.enabled: true`, each row gets:
