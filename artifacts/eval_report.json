@@ -1,6 +1,6 @@
 {
   "stage": "evaluation_agent",
-  "created_at": "2026-11-07T16:39:01.615003+00:00",
+  "created_at": "2026-11-11T02:52:17.824149+00:00",
   "passed": true,
   "sample_count": 6,
   "issues": [],
@@ -102,9 +102,11 @@
   "training": {
     "stage": "training_agent",
     "mode": "dry_run",
-    "created_at": "2026-11-07T16:39:01.606586+00:00",
+    "created_at": "2026-11-11T02:52:17.815285+00:00",
     "sample_count": 6,
     "message": "Dry run: install torch+transformers and set training.dry_run false for real fine-tuning.",
-    "checkpoint_dir": "artifacts/checkpoints"
-  }
+    "checkpoint_dir": "artifacts/checkpoints",
+    "run_id": "20261111T025217Z-70f2d28"
+  },
+  "run_id": "20261111T025217Z-70f2d28"
 }

@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import ensure_dir, read_jsonl, write_json
+from ._io import ensure_dir, read_jsonl, with_run_id, write_json
 
 
 def _dry_run_train(config: dict[str, Any], sft_path: Path, ckpt_dir: Path) -> dict[str, Any]:
@@ -122,4 +122,4 @@ def run(config: dict[str, Any]) -> None:
         training_log = _real_train(config, sft_path, ckpt_dir)
 
     log_path = Path(paths["artifacts_dir"]) / "training_log.json"
-    write_json(log_path, training_log)
+    write_json(log_path, with_run_id(config, training_log))

@@ -23,6 +23,17 @@ pip install -r requirements.txt
 python scripts/run_pipeline.py --config config/default.yaml
 ```
 
+### Pipeline UX
+
+| Flag | Behavior |
+|------|----------|
+| `--only collect,label,evaluate` | Run only those stages (canonical order) |
+| `--dry-run` / `--summary-only` | Print summary from existing artifacts; no stages run (exit code follows last eval) |
+| `--quiet` | Skip the summary block |
+| *(default)* | Full pipeline; prints summary; **exit 1** if evaluation stage ran and `passed: false` |
+
+Every stage manifest/stats JSON includes **`run_id`**; the orchestrator also writes `artifacts/run.json`.
+
 Stages run in order. Training defaults to **`dry_run: true`** (no GPU, writes a stub checkpoint). Set `training.dry_run: false` and install `torch` + `transformers` to run a minimal fine-tune on CPU (slow but real).
 
 ## Sample data

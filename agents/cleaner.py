@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import read_jsonl, write_json, write_jsonl
+from ._io import read_jsonl, with_run_id, write_json, write_jsonl
 
 
 def _norm(text: str, lowercase: bool, strip_ws: bool) -> str:
@@ -70,4 +70,4 @@ def run(config: dict[str, Any]) -> None:
         "dropped": dropped,
         "clean_path": str(clean_path.as_posix()),
     }
-    write_json(stats_path, stats)
+    write_json(stats_path, with_run_id(config, stats))

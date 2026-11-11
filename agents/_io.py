@@ -36,3 +36,10 @@ def write_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
 def ensure_dir(path: Path) -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
+
+
+def with_run_id(config: dict[str, Any], obj: dict[str, Any]) -> dict[str, Any]:
+    run_id = config.get("run_id")
+    if run_id:
+        return {**obj, "run_id": run_id}
+    return obj

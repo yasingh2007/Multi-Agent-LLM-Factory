@@ -1,3 +1,6 @@
+# Optional fixed id for reproducibility (otherwise auto: UTC timestamp + git short SHA)
+# run_id: demo-2026-11-10
+
 paths:
   raw_dir: data/raw
   clean_dir: data/clean

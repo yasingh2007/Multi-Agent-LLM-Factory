@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import read_json, read_jsonl, write_json
+from ._io import read_json, read_jsonl, with_run_id, write_json
 from .metrics import aggregate_metrics, summarize_row_metrics
 
 
@@ -119,4 +119,4 @@ def run(config: dict[str, Any]) -> None:
         "training": training_meta,
     }
     out_path = Path(paths["artifacts_dir"]) / "eval_report.json"
-    write_json(out_path, report)
+    write_json(out_path, with_run_id(config, report))

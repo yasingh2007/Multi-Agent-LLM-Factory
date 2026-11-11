@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import read_jsonl, write_json, write_jsonl
+from ._io import read_jsonl, with_run_id, write_json, write_jsonl
 from .llm_client import LLMError, chat_completion, resolve_llm_settings
 
 
@@ -158,4 +158,4 @@ def run(config: dict[str, Any]) -> None:
         "sft_path": str(sft_path.as_posix()),
         "dpo_path": str(dpo_path.as_posix()) if dpo_enabled else None,
     }
-    write_json(stats_path, stats)
+    write_json(stats_path, with_run_id(config, stats))

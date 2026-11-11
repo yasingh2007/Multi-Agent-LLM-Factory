@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import ensure_dir, read_jsonl, write_json, write_jsonl
+from ._io import ensure_dir, read_jsonl, with_run_id, write_json, write_jsonl
 
 
 def _sha256_file(path: Path) -> str:
@@ -56,4 +56,4 @@ def run(config: dict[str, Any]) -> None:
         "content_sha256": content_hash,
         "extra": collector_cfg.get("manifest_extra", {}),
     }
-    write_json(manifest_path, manifest)
+    write_json(manifest_path, with_run_id(config, manifest))

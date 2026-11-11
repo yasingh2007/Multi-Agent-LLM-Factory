@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from ._io import read_json, write_json
+from ._io import read_json, with_run_id, write_json
 
 
 def run(config: dict[str, Any]) -> None:
@@ -21,19 +21,25 @@ def run(config: dict[str, Any]) -> None:
     t = read_json(training_log) if training_log.exists() else {}
     e = read_json(eval_report) if eval_report.exists() else {}
 
-    model_card = {
-        "title": "Small LLM Training Factory — demo bundle",
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "training": t,
-        "evaluation": e,
-        "usage": "Point your inference server at checkpoint_dir from training_log; quantize as needed.",
-    }
+    model_card = with_run_id(
+        config,
+        {
+            "title": "Small LLM Training Factory — demo bundle",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "training": t,
+            "evaluation": e,
+            "usage": "Point your inference server at checkpoint_dir from training_log; quantize as needed.",
+        },
+    )
 
     write_json(pkg_dir / "model_card.json", model_card)
-    release = {
-        "stage": "deployment_agent",
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "package_dir": str(pkg_dir.as_posix()),
-        "files": ["model_card.json"],
-    }
+    release = with_run_id(
+        config,
+        {
+            "stage": "deployment_agent",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "package_dir": str(pkg_dir.as_posix()),
+            "files": ["model_card.json"],
+        },
+    )
     write_json(pkg_dir / "release_manifest.json", release)
