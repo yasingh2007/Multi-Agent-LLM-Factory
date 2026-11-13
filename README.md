@@ -34,7 +34,9 @@ python scripts/run_pipeline.py --config config/default.yaml
 
 Every stage manifest/stats JSON includes **`run_id`**; the orchestrator also writes `artifacts/run.json`.
 
-Stages run in order. Training defaults to **`dry_run: true`** (no GPU, writes a stub checkpoint). Set `training.dry_run: false` and install `torch` + `transformers` to run a minimal fine-tune on CPU (slow but real).
+Stages run in order. Training defaults to **`dry_run: true`** (writes a stub under `artifacts/checkpoints/<objective>/`). Set **`training.objective`** to `sft` or `dpo` (`dpo` reads `data/labeled/dpo.jsonl` and needs `trl` when `dry_run: false`).
+
+`artifacts/training_log.json` records **hyperparams** and **SHA-256** of training data for reproducibility. **Evaluation** picks a checkpoint (`eval_report.json` → `selected_checkpoint`); **Deployment** copies deployable weights into `artifacts/deploy/model/` (otherwise dry-run stub only).
 
 ## Sample data
 

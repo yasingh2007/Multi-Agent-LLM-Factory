@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from ._io import read_json, read_jsonl, with_run_id, write_json
+from .checkpoint_select import select_checkpoint
 from .metrics import aggregate_metrics, summarize_row_metrics
 
 
@@ -105,13 +106,20 @@ def run(config: dict[str, Any]) -> None:
         training_meta = read_json(training_log_path)
 
     passed = len(issues) == 0
+    agg = aggregate_metrics(row_metric_list)
+    selected_checkpoint = select_checkpoint(
+        training_meta,
+        eval_passed=passed,
+        aggregate_metrics=agg,
+    )
     report = {
         "stage": "evaluation_agent",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "passed": passed,
         "sample_count": len(rows),
         "issues": issues,
-        "aggregate_metrics": aggregate_metrics(row_metric_list),
+        "aggregate_metrics": agg,
+        "selected_checkpoint": selected_checkpoint,
         "row_failures": row_failures,
         "row_fail_fraction": round(fail_fraction, 4),
         "per_row": per_row,

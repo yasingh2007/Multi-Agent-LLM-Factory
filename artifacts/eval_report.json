@@ -1,6 +1,6 @@
 {
   "stage": "evaluation_agent",
-  "created_at": "2026-11-11T02:52:17.824149+00:00",
+  "created_at": "2026-11-13T00:29:02.147566+00:00",
   "passed": true,
   "sample_count": 6,
   "issues": [],
@@ -29,6 +29,15 @@
       "min": 0.4444,
       "max": 0.6154
     }
+  },
+  "selected_checkpoint": {
+    "path": "artifacts/checkpoints/sft",
+    "kind": "dry_run_stub",
+    "criterion": "newest_checkpoint_subdir",
+    "eval_passed": true,
+    "quality_score": 0.5237,
+    "deployable": false,
+    "reason": "stub only (dry_run)"
   },
   "row_failures": 0,
   "row_fail_fraction": 0.0,
@@ -102,11 +111,33 @@
   "training": {
     "stage": "training_agent",
     "mode": "dry_run",
-    "created_at": "2026-11-11T02:52:17.815285+00:00",
+    "objective": "sft",
+    "created_at": "2026-11-13T00:29:02.126580+00:00",
     "sample_count": 6,
-    "message": "Dry run: install torch+transformers and set training.dry_run false for real fine-tuning.",
-    "checkpoint_dir": "artifacts/checkpoints",
-    "run_id": "20261111T025217Z-70f2d28"
+    "checkpoint_dir": "artifacts/checkpoints/sft",
+    "hyperparams": {
+      "dry_run": true,
+      "objective": "sft",
+      "base_model": "sshleifer/tiny-gpt2",
+      "output_dir": "artifacts/checkpoints",
+      "num_train_epochs": 1,
+      "per_device_train_batch_size": 2,
+      "learning_rate": 5e-05,
+      "max_length": 128,
+      "seed": 42
+    },
+    "data_provenance": {
+      "sft.jsonl": {
+        "path": "data/labeled/sft.jsonl",
+        "sha256": "543ea2979a9d924008e2af74c321dd6bbdbff6b8c07d313b29b8bcb5b579885d"
+      },
+      "dpo.jsonl": {
+        "path": "data/labeled/dpo.jsonl",
+        "sha256": "94bcc49fa95488ea854925b8fa4f463d33f65912a10e5d9692fcd6a007df6b31"
+      }
+    },
+    "message": "Dry run (sft): install torch, transformers, datasets and set training.dry_run false.",
+    "run_id": "20261113T002902Z-08f7f92"
   },
-  "run_id": "20261111T025217Z-70f2d28"
+  "run_id": "20261113T002902Z-08f7f92"
 }

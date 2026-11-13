@@ -1,0 +1,54 @@
+# DPO dry-run / training profile (copy of default with objective: dpo)
+
+paths:
+  raw_dir: data/raw
+  clean_dir: data/clean
+  labeled_dir: data/labeled
+  artifacts_dir: artifacts
+
+collector:
+  seed_file: data/raw/sample_corpus.jsonl
+
+cleaner:
+  min_chars: 20
+  max_chars: 2000
+  lowercase: true
+  strip_extra_whitespace: true
+  dedupe: true
+
+labeling:
+  instruction: "Summarize the following text in one sentence."
+  output_key: "response"
+  input_key: "instruction"
+  mode: heuristic
+  dpo:
+    enabled: true
+    rejected_strategy: weak
+
+training:
+  dry_run: true
+  objective: dpo
+  base_model: "sshleifer/tiny-gpt2"
+  output_dir: artifacts/checkpoints
+  num_train_epochs: 1
+  per_device_train_batch_size: 2
+  learning_rate: 5.0e-5
+  max_length: 128
+  seed: 42
+  dpo:
+    beta: 0.1
+    max_length: 128
+    max_prompt_length: 64
+
+evaluation:
+  min_train_samples: 3
+  gates:
+    min_nonempty_rate: 1.0
+    min_compression_ratio: 0.02
+    max_compression_ratio: 0.95
+    min_token_recall: 0.08
+    max_token_f1: 0.92
+    max_row_fail_fraction: 0.34
+
+deployment:
+  package_dir: artifacts/deploy
